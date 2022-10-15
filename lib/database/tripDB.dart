@@ -63,7 +63,8 @@ class TripDB {
 
   Future updateTrip(int id, Trip trip) async {
     final db = await helper.database;
-    await db.update(TABLE_NAME, trip.toJson(),
-        where: "$TRIP_ID = ?", whereArgs: [id]);
+    var t = trip.toJson();
+    t[TRIP_ID] = id;
+    await db.update(TABLE_NAME, t, where: "$TRIP_ID = ?", whereArgs: [id]);
   }
 }

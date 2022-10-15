@@ -14,7 +14,7 @@ class Trip {
       this.riskAssessment, this.description, this.total);
 
   Trip.createTrip(this.name, this.destination, this.startDate, this.endDate,
-      this.riskAssessment, this.description, this.total);
+      this.riskAssessment, this.description);
 
   Trip.empty();
 
