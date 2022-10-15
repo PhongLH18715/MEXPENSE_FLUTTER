@@ -1,8 +1,7 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, file_names
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mexpense/main.dart';
 import 'package:mexpense/model/expense.dart';
 import '../database/expenseDB.dart';
 import '../model/trip.dart';
@@ -29,77 +28,85 @@ class _ExpenseFormState extends State<ExpenseForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Form(
-            key: expense_key,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    validator: textValidator,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: nameController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.airplanemode_active),
-                        labelText: "Name",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    controller: dateController,
-                    readOnly: true,
-                    onTap: getDate,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    validator: numValidator,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: costController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.attach_money),
-                        labelText: "Cost",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    validator: numValidator,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: amountController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.numbers),
-                        labelText: "Amount",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    controller: noteController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_pin),
-                        labelText: "Other notes",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 28.0),
+          child: Form(
+              key: expense_key,
+              child: Column(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                    child: ElevatedButton(
-                      onPressed: saveExpense,
-                      child: const Text('Save'),
-                    )),
-              ],
-            )),
+                    child: TextFormField(
+                      validator: textValidator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.category),
+                          labelText: "Name",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      controller: dateController,
+                      readOnly: true,
+                      onTap: getDate,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.date_range),
+                          labelText: "Date",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      validator: numValidator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: costController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.attach_money),
+                          labelText: "Cost",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      validator: numValidator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: amountController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.numbers),
+                          labelText: "Amount",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      controller: noteController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.location_pin),
+                          labelText: "Other notes",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                      child: ElevatedButton(
+                        onPressed: saveExpense,
+                        child: const Text('Save'),
+                      )),
+                ],
+              )),
+        ),
       ),
     );
   }

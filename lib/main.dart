@@ -1,4 +1,7 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
+import 'package:mexpense/layouts/expenseForm.dart';
 import 'package:mexpense/layouts/expenses.dart';
 import 'package:mexpense/layouts/tripForm.dart';
 import 'package:mexpense/layouts/trips.dart';
@@ -18,6 +21,7 @@ class MyApp extends StatelessWidget {
         Routes.trips: (context) => const Trips(),
         Routes.trips_form: (context) => TripForm(),
         Routes.expense: (context) => Expenses(),
+        Routes.expense_form: (context) => ExpenseForm(),
       },
       initialRoute: Routes.trips,
     );

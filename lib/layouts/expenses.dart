@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mexpense/database/expenseDB.dart';
+import 'package:mexpense/database/tripDB.dart';
+import 'package:mexpense/layouts/expenseForm.dart';
 import 'package:mexpense/model/trip.dart';
 
 class Expenses extends StatefulWidget {
@@ -14,16 +16,34 @@ class _ExpensesState extends State<Expenses> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      ExpenseDB.helper.getExpenses(widget.trip!.id);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Column(children: [
-        Row(children: []),
+        FutureBuilder(
+            future: TripDB.helper.getTrip(widget.trip!.id),
+            builder: (context, snapshot) {
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(snapshot.data!.name),
+                      Text(snapshot.data!.destination)
+                    ],
+                  ),
+                ],
+              );
+            }),
         Expanded(
           child: FutureBuilder(
-            future: ExpenseDB.helper.getExpenses(),
+            future: ExpenseDB.helper.getExpenses(widget.trip!.id),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return expenseList(snapshot);
@@ -35,6 +55,18 @@ class _ExpensesState extends State<Expenses> {
           ),
         )
       ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ExpenseForm(
+                    trip: widget.trip!,
+                  )));
+        },
+        backgroundColor: Colors.cyan,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, file_names
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -65,14 +65,22 @@ class _TripFormState extends State<TripForm> {
                     controller: startController,
                     readOnly: true,
                     onTap: () => getDate('Start'),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.location_pin),
+                        labelText: "Start Date",
+                        border: OutlineInputBorder()),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                   child: TextFormField(
-                    controller: startController,
+                    controller: endController,
                     readOnly: true,
                     onTap: () => getDate('End'),
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.location_pin),
+                        labelText: "End Date",
+                        border: OutlineInputBorder()),
                   ),
                 ),
                 Padding(
@@ -96,8 +104,8 @@ class _TripFormState extends State<TripForm> {
                     controller: descriptionController,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_pin),
-                        labelText: "Destination",
+                        prefixIcon: Icon(Icons.speaker_notes),
+                        labelText: "Other Description",
                         border: OutlineInputBorder()),
                   ),
                 ),
@@ -128,7 +136,7 @@ class _TripFormState extends State<TripForm> {
           assessment,
           descriptionController.text);
 
-      if (widget.trip!.id == -1) {
+      if (widget.trip == null) {
         TripDB.helper.addTrip(t);
         Navigator.pushNamed(context, Routes.trips);
       } else {

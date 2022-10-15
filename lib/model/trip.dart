@@ -24,7 +24,7 @@ class Trip {
         destination = json[TRIP_DESTINATION],
         startDate = json[TRIP_START],
         endDate = json[TRIP_END],
-        riskAssessment = json[TRIP_RISK_ASSESSMENT],
+        riskAssessment = json[TRIP_RISK_ASSESSMENT] == "1" ? true : false,
         description = json[TRIP_DESCRIPTION],
         total = json[TRIP_TOTAL];
 

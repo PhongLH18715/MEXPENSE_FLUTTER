@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mexpense/database/tripDB.dart';
 
 import '../main.dart';
+import 'expenses.dart';
 
 class Trips extends StatefulWidget {
   const Trips({Key? key}) : super(key: key);
@@ -14,6 +15,9 @@ class _TripState extends State<Trips> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      TripDB.helper.getTrips();
+    });
   }
 
   @override
@@ -53,13 +57,22 @@ class _TripState extends State<Trips> {
         itemCount: snapshot.data?.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              print("Clicked");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Expenses(
+                        trip: snapshot.data![index],
+                      )));
+            },
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(12.0, 6, 12, 6),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(snapshot.data![index].name),
                         Text(snapshot.data![index].startDate),
@@ -67,9 +80,11 @@ class _TripState extends State<Trips> {
                       ],
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(snapshot.data![index].destination),
-                        Text(snapshot.data![index].total)
+                        const Text(""),
+                        Text("Total: ${snapshot.data![index].total.toString()}")
                       ],
                     )
                   ]),
