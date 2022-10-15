@@ -1,0 +1,161 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mexpense/main.dart';
+import 'package:mexpense/model/expense.dart';
+import '../database/expenseDB.dart';
+import '../model/trip.dart';
+import 'expenses.dart';
+
+class ExpenseForm extends StatefulWidget {
+  ExpenseForm({Key? key, this.expense, this.trip}) : super(key: key);
+  Expense? expense;
+  Trip? trip;
+
+  @override
+  State<StatefulWidget> createState() => _ExpenseFormState();
+}
+
+class _ExpenseFormState extends State<ExpenseForm> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController costController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+
+  final expense_key = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+            key: expense_key,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: TextFormField(
+                    validator: textValidator,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: nameController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.airplanemode_active),
+                        labelText: "Name",
+                        border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: TextFormField(
+                    controller: dateController,
+                    readOnly: true,
+                    onTap: getDate,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: TextFormField(
+                    validator: numValidator,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: costController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.attach_money),
+                        labelText: "Cost",
+                        border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: TextFormField(
+                    validator: numValidator,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: amountController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.numbers),
+                        labelText: "Amount",
+                        border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                  child: TextFormField(
+                    controller: noteController,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.location_pin),
+                        labelText: "Other notes",
+                        border: OutlineInputBorder()),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: ElevatedButton(
+                      onPressed: saveExpense,
+                      child: const Text('Save'),
+                    )),
+              ],
+            )),
+      ),
+    );
+  }
+
+  void saveExpense() {
+    if (expense_key.currentState!.validate()) {
+      var currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+
+      Expense e = Expense.createExpense(
+          nameController.text,
+          dateController.text,
+          int.parse(costController.text),
+          int.parse(amountController.text),
+          noteController.text,
+          widget.trip!.id);
+
+      if (widget.expense!.id == -1) {
+        ExpenseDB.helper.addExpense(e);
+      } else {
+        ExpenseDB.helper.updateExpense(widget.expense!.id, e);
+      }
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Expenses(
+                    trip: widget.trip!,
+                  )));
+    }
+  }
+
+  void getDate() async {
+    DateTime? datePicker = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2077));
+    if (datePicker != null) {
+      dateController.text = DateFormat("dd/MM/yyyy").format(datePicker);
+    }
+  }
+
+  static String? textValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return "This field cannot be empty";
+    }
+    return null;
+  }
+
+  static String? numValidator(String? value) {
+    if (value == null || value == "0") {
+      return "Please enter a number";
+    }
+    return null;
+  }
+}

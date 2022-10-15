@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mexpense/layouts/expenses.dart';
 import 'package:mexpense/layouts/tripForm.dart';
 import 'package:mexpense/layouts/trips.dart';
-import 'package:mexpense/model/trip.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.trips: (context) => const Trips(),
         Routes.trips_form: (context) => TripForm(),
+        Routes.expense: (context) => Expenses(),
       },
       initialRoute: Routes.trips,
     );

@@ -52,25 +52,28 @@ class _TripState extends State<Trips> {
         shrinkWrap: true,
         itemCount: snapshot.data?.length,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 6, 12, 6),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(snapshot.data![index].name),
-                      Text(snapshot.data![index].startDate),
-                      Text(snapshot.data![index].endDate)
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(snapshot.data![index].destination),
-                      Text(snapshot.data![index].total)
-                    ],
-                  )
-                ]),
+          return GestureDetector(
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12.0, 6, 12, 6),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(snapshot.data![index].name),
+                        Text(snapshot.data![index].startDate),
+                        Text(snapshot.data![index].endDate)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(snapshot.data![index].destination),
+                        Text(snapshot.data![index].total)
+                      ],
+                    )
+                  ]),
+            ),
           );
         });
   }
