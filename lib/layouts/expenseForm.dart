@@ -23,6 +23,18 @@ class _ExpenseFormState extends State<ExpenseForm> {
   TextEditingController amountController = TextEditingController();
   TextEditingController noteController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.expense != null) {
+      nameController.text = widget.expense!.name;
+      dateController.text = widget.expense!.date;
+      costController.text =  widget.expense!.cost.toString();
+      amountController.text = widget.expense!.amount.toString();
+      noteController.text = widget.expense!.notes;
+    }
+  }
+
   final expense_key = GlobalKey<FormState>();
 
   @override
@@ -126,7 +138,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
           noteController.text,
           widget.trip!.id);
 
-      if (widget.expense!.id == -1) {
+      if (widget.expense == null) {
         ExpenseDB.helper.addExpense(e);
       } else {
         ExpenseDB.helper.updateExpense(widget.expense!.id, e);

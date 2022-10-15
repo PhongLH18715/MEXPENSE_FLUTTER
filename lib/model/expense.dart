@@ -20,6 +20,7 @@ class Expense {
   Expense.fromJSON(Map<String, dynamic> json)
       : id = json[EXPENSE_ID],
         name = json[EXPENSE_NAME],
+        date = json[EXPENSE_DATE],
         cost = json[EXPENSE_COST],
         amount = json[EXPENSE_AMOUNT],
         notes = json[EXPENSE_NOTES],

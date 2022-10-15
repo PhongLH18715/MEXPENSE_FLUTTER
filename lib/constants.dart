@@ -1,7 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-const DB_PATH = "flutter";
-
 const EXPENSE_ID = "_id";
 const EXPENSE_NAME = "name";
 const EXPENSE_DATE = "date";

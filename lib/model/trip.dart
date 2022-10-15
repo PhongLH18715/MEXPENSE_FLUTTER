@@ -24,7 +24,7 @@ class Trip {
         destination = json[TRIP_DESTINATION],
         startDate = json[TRIP_START],
         endDate = json[TRIP_END],
-        riskAssessment = json[TRIP_RISK_ASSESSMENT] == "1" ? true : false,
+        riskAssessment = json[TRIP_RISK_ASSESSMENT] == 1 ? true : false,
         description = json[TRIP_DESCRIPTION],
         total = json[TRIP_TOTAL];
 
@@ -34,10 +34,15 @@ class Trip {
       TRIP_DESTINATION: destination,
       TRIP_START: startDate,
       TRIP_END: endDate,
-      TRIP_RISK_ASSESSMENT: riskAssessment,
+      TRIP_RISK_ASSESSMENT: riskAssessment ? 1 : 0,
       TRIP_DESCRIPTION: description,
       TRIP_TOTAL: total
     };
+  }
+
+  @override
+  String toString() {
+    return 'Trip{id: $id, name: $name, destination: $destination, startDate: $startDate, endDate: $endDate, riskAssessment: $riskAssessment, description: $description, total: $total}';
   }
 }
 

@@ -18,7 +18,7 @@ class TripDB {
   TripDB._init();
 
   Future<Database> get database async =>
-      _database ??= await getDatabase(DB_PATH);
+      _database ??= await getDatabase("trips_flutter");
 
   Future<Database> getDatabase(String path) async {
     String databasePath = await getDatabasesPath();

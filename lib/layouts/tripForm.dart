@@ -26,97 +26,114 @@ class _TripFormState extends State<TripForm> {
   final trip_key = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.trip != null) {
+      nameController.text = widget.trip!.name;
+      destinationController.text = widget.trip!.destination;
+      descriptionController.text = widget.trip!.description;
+      startController.text = widget.trip!.startDate;
+      endController.text = widget.trip!.endDate;
+      assessment = widget.trip!.riskAssessment;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Form(
-            key: trip_key,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    validator: textValidator,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: nameController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.airplanemode_active),
-                        labelText: "Trip Name",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    validator: textValidator,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: destinationController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_pin),
-                        labelText: "Destination",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    controller: startController,
-                    readOnly: true,
-                    onTap: () => getDate('Start'),
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_pin),
-                        labelText: "Start Date",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    controller: endController,
-                    readOnly: true,
-                    onTap: () => getDate('End'),
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.location_pin),
-                        labelText: "End Date",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text("Assessment"),
-                        Switch(
-                            value: assessment,
-                            onChanged: ((value) {
-                              setState(() {
-                                assessment = value;
-                              });
-                            }))
-                      ]),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: TextFormField(
-                    controller: descriptionController,
-                    keyboardType: TextInputType.text,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.speaker_notes),
-                        labelText: "Other Description",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Padding(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 18.0),
+          child: Form(
+              key: trip_key,
+              child: Column(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                    child: ElevatedButton(
-                      onPressed: saveTrip,
-                      child: const Text('Save'),
-                    )),
-              ],
-            )),
+                    child: TextFormField(
+                      validator: textValidator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: nameController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.airplanemode_active),
+                          labelText: "Trip Name",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      validator: textValidator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: destinationController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.location_pin),
+                          labelText: "Destination",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      controller: startController,
+                      readOnly: true,
+                      onTap: () => getDate('Start'),
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.date_range),
+                          labelText: "Start Date",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      controller: endController,
+                      readOnly: true,
+                      onTap: () => getDate('End'),
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.date_range),
+                          labelText: "End Date",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text("Assessment"),
+                          Switch(
+                              value: assessment,
+                              onChanged: ((value) {
+                                setState(() {
+                                  assessment = value;
+                                });
+                              }))
+                        ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                    child: TextFormField(
+                      controller: descriptionController,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.speaker_notes),
+                          labelText: "Other Description",
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                      child: ElevatedButton(
+                        onPressed: saveTrip,
+                        child: const Text('Save'),
+                      )),
+                ],
+              )),
+        ),
       ),
     );
   }

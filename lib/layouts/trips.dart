@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mexpense/database/tripDB.dart';
 
 import '../main.dart';
+import '../model/trip.dart';
 import 'expenses.dart';
 
 class Trips extends StatefulWidget {
@@ -16,8 +17,12 @@ class _TripState extends State<Trips> {
   void initState() {
     super.initState();
     setState(() {
-      TripDB.helper.getTrips();
+      getTrips();
     });
+  }
+
+  Future<List<Trip>> getTrips() async{
+    return await TripDB.helper.getTrips();
   }
 
   @override
@@ -28,7 +33,7 @@ class _TripState extends State<Trips> {
         children: [
           Expanded(
             child: FutureBuilder(
-              future: TripDB.helper.getTrips(),
+              future: getTrips(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return tripList(snapshot);
