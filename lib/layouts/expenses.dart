@@ -80,25 +80,63 @@ class _ExpensesState extends State<Expenses> {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: Card(
-            child: FutureBuilder(
-                future: getTrip(widget.trip!.id),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(snapshot.data!.name),
-                            Text(snapshot.data!.destination),
-                          ],
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Center(child: Text("Trip loading"));
-                  }
-                }),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FutureBuilder(
+                  future: getTrip(widget.trip!.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(snapshot.data!.name),
+                              Text(snapshot.data!.destination),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 28.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "\$${snapshot.data!.total}",
+                                  style: const TextStyle(fontSize: 40),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(snapshot.data!.startDate),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(snapshot.data!.endDate),
+                              Text(snapshot.data!.riskAssessment
+                                  ? "Required assessment"
+                                  : "Unrequired Assessment"),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const SizedBox(height: 20),
+                              Text(snapshot.data!.description == ""
+                                  ? "No description"
+                                  : snapshot.data!.description),
+                            ],
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Center(child: Text("Trip loading"));
+                    }
+                  }),
+            ),
           ),
         ),
         Expanded(

@@ -20,6 +20,7 @@ class _TripState extends State<Trips> {
   @override
   void initState() {
     super.initState();
+
     setState(() {
       trips = getTrips();
     });

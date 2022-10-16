@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mexpense/model/expense.dart';
 import '../database/expenseDB.dart';
+import '../main.dart';
 import '../model/trip.dart';
 import 'expenses.dart';
 
@@ -29,7 +30,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     if (widget.expense != null) {
       nameController.text = widget.expense!.name;
       dateController.text = widget.expense!.date;
-      costController.text =  widget.expense!.cost.toString();
+      costController.text = widget.expense!.cost.toString();
       amountController.text = widget.expense!.amount.toString();
       noteController.text = widget.expense!.notes;
     }
@@ -37,10 +38,44 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   final expense_key = GlobalKey<FormState>();
 
+  deleteExpense() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Confirmation"),
+            content: const Text(
+                "This expense will be deleted and the action cannot be undone."),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("No")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Expenses(
+                                  trip: widget.trip!,
+                                )));
+                  },
+                  child: const Text("Yes")),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: widget.expense != null
+            ? <Widget>[
+                IconButton(
+                    onPressed: deleteExpense, icon: const Icon(Icons.delete)),
+              ]
+            : null,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 28.0),

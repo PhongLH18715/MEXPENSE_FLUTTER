@@ -33,7 +33,8 @@ class ExpenseDB {
 
   Future<List<Expense>> getExpenses(int tripId) async {
     final db = await helper.database;
-    final List<Map<String, Object?>> expenses = await db.query(TABLE_NAME, whereArgs:[tripId], where:  "$EXPENSE_TRIP_ID = ?");
+    final List<Map<String, Object?>> expenses = await db.query(TABLE_NAME,
+        whereArgs: [tripId], where: "$EXPENSE_TRIP_ID = ?");
     return expenses.map((e) => Expense.fromJSON(e)).toList();
   }
 
@@ -61,5 +62,18 @@ class ExpenseDB {
     final db = await helper.database;
     await db.update(TABLE_NAME, e.toJson(),
         where: "$EXPENSE_ID = ?", whereArgs: [id]);
+  }
+
+  Future<int> getTotal(int id) async {
+    final db = await helper.database;
+    String query =
+        "SELECT SUM($EXPENSE_COST*$EXPENSE_AMOUNT) AS sum FROM expense WHERE $EXPENSE_TRIP_ID = $id";
+    final res = await db.rawQuery(query);
+    Map first = res.first;
+    if (first['sum'] != null) {
+      return first['sum'];
+    } else {
+      return 0;
+    }
   }
 }

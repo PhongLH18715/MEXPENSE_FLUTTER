@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names, file_names
 
+import 'package:mexpense/database/expenseDB.dart';
 import 'package:mexpense/model/trip.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,6 +44,7 @@ class TripDB {
 
   Future<Trip> getTrip(int id) async {
     final db = await helper.database;
+    await updateTotal(id);
     final List<Map<String, Object?>> res =
         await db.query(TABLE_NAME, where: "$TRIP_ID = ?", whereArgs: [id]);
     return Trip.fromJSON(res.first);
@@ -73,5 +75,14 @@ class TripDB {
     var t = trip.toJson();
     t[TRIP_ID] = id;
     await db.update(TABLE_NAME, t, where: "$TRIP_ID = ?", whereArgs: [id]);
+  }
+
+  Future<int> updateTotal(int id) async {
+    final db = await helper.database;
+    int total = await ExpenseDB.helper.getTotal(id);
+    await db.rawUpdate(
+        "UPDATE $TABLE_NAME set $TRIP_TOTAL = ? WHERE $TRIP_ID = ?",
+        [total, id]);
+    return 200;
   }
 }
