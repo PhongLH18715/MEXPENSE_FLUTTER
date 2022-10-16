@@ -48,6 +48,13 @@ class TripDB {
     return Trip.fromJSON(res.first);
   }
 
+  Future<List<Trip>> getTripByName(String keyword) async {
+    final db = await helper.database;
+    final trips = await db.query(TABLE_NAME,
+        where: "$TRIP_NAME like ?", whereArgs: ['%$keyword%']);
+    return trips.map((t) => Trip.fromJSON(t)).toList();
+  }
+
   Future addTrip(Trip t) async {
     var trip = t.toJson();
     trip[TRIP_ID] = null;

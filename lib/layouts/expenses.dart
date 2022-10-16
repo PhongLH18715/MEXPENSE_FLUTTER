@@ -44,24 +44,26 @@ class _ExpensesState extends State<Expenses> {
   }
 
   deleteTrip() {
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        title: const Text("Confirmation"),
-        content: const Text("This trip will be deleted and the action cannot be undone?"),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("No")),
-          TextButton(
-              onPressed: () {
-                TripDB.helper.deleteTrip(widget.trip!.id);
-                Navigator.pushNamed(context, Routes.trips);
-              },
-              child: const Text("Yes")),
-
-        ],
-      );
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Confirmation"),
+            content: const Text(
+                "This trip will be deleted and the action cannot be undone?"),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("No")),
+              TextButton(
+                  onPressed: () {
+                    TripDB.helper.deleteTrip(widget.trip!.id);
+                    Navigator.pushNamed(context, Routes.trips);
+                  },
+                  child: const Text("Yes")),
+            ],
+          );
+        });
   }
 
   @override
@@ -77,25 +79,27 @@ class _ExpensesState extends State<Expenses> {
       body: Column(children: [
         Padding(
           padding: const EdgeInsets.all(20.0),
-          child: FutureBuilder(
-              future: getTrip(widget.trip!.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(snapshot.data!.name),
-                          Text(snapshot.data!.destination),
-                        ],
-                      ),
-                    ],
-                  );
-                } else {
-                  return const Center(child: Text("Trip loading"));
-                }
-              }),
+          child: Card(
+            child: FutureBuilder(
+                future: getTrip(widget.trip!.id),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(snapshot.data!.name),
+                            Text(snapshot.data!.destination),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const Center(child: Text("Trip loading"));
+                  }
+                }),
+          ),
         ),
         Expanded(
           child: FutureBuilder(
@@ -143,31 +147,30 @@ class _ExpensesState extends State<Expenses> {
                               expense: snapshot.data![index],
                             )));
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(children: [
-                    Column(
-                      children: [
-                        Text(snapshot.data![index].name),
-                        Text("${snapshot.data![index].date}")
-                      ],
-                    ),
-                  ]),
-                  Column(children: [
-                    Column(
-                      children: [
-                        Text(
-                            "\$${snapshot.data![index].cost} x ${snapshot.data![index].amount}"),
-                      ],
-                    )
-                  ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(snapshot.data![index].notes ??= "No comments")
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(snapshot.data![index].name),
+                          Text("${snapshot.data![index].date}")
+                        ],
+                      ),
+                      Column(children: [
+                        Column(
+                          children: [
+                            Text(
+                                "\$${snapshot.data![index].cost} x ${snapshot.data![index].amount}"),
+                          ],
+                        )
                       ]),
-                ],
+                    ],
+                  ),
+                ),
               ),
             ),
           );
